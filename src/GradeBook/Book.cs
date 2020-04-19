@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace GradeBook
 {
+    public delegate void GradeAddedDelegate(object sender, EventArgs args);
     // if not public, internal, meaning it can only be used by that project
     public class Book
     {
@@ -14,7 +16,12 @@ namespace GradeBook
         public void AddGrade(double grade)
         {
             grades.Add(grade);
+            if(GradeAdded != null)
+            {
+                GradeAdded(this, new EventArgs());
+            }
         }
+        public event GradeAddedDelegate GradeAdded;
         public double HighestGrade()
         {
             return grades.Max();
@@ -28,6 +35,12 @@ namespace GradeBook
             return grades.Sum() / grades.Count;
         }
         private List<double> grades;
-        public string Name;
+
+        public string Name 
+        {
+            get;
+            set;
+        }
+        private string name;
     }
 }
